@@ -97,6 +97,12 @@ h1 em{font-style:italic;color:var(--indigo)}
  padding:11px 20px;border-radius:4px;transition:opacity .15s}
 .xlink a:hover{opacity:.88}
 .xlink a:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.navbar{display:flex;flex-wrap:wrap;gap:9px;margin:26px 0 0}
+.navbar a{text-decoration:none;font-size:14px;font-weight:600;padding:9px 16px;
+ border-radius:4px;border:1px solid var(--rule);color:var(--ink2);background:var(--card)}
+.navbar a:hover{border-color:var(--indigo);color:var(--indigo)}
+.navbar a.on{background:var(--indigo);color:#fff;border-color:var(--indigo)}
+.navbar a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 
 /* ── легенда-фильтр ── */
 .legend{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
@@ -279,7 +285,12 @@ footer b{color:var(--ink2);font-weight:600}
 
 <main class="wrap">
 
-<p class="xlink"><a href="temy/">Все три курса одним листом — карта тем →</a></p>
+<nav class="navbar">
+  <a class="on" href="./">Алгебра</a>
+  <a href="geometriya/">Геометрия</a>
+  <a href="veroyatnost/">Вероятность и статистика</a>
+  <a href="temy/">Все три курса одним листом</a>
+</nav>
 
 <section class="axis">
   <h2 style="font-size:24px;margin:0 0 4px">Год целиком</h2>

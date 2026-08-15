@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Геометрия, 9 класс</title>
+<style>
+/* ── токены: только светлая тема (тёмная отключена намеренно) ── */
+:root{
+  --paper:#EEF3FF; --card:#FFFFFF; --card2:#F5F8FF;
+  --ink:#111834; --ink2:#3C4A6E; --ink3:#6E7CA0;
+  --rule:#DCE4F7; --grid:#E4EBFC;
+  /* у каждого цвета три роли: текст (тёмный), заливка (яркий), подложка (светлая) */
+  --indigo:#2B3FD0; --indigo-b:#4A5DF0; --indigo-s:#E7EBFF;
+  --red:#D02B2B;    --red-b:#F2453C;    --red-s:#FFE9E7;
+  --slate:#4E5B7A;  --slate-b:#8492B4;  --slate-s:#EDF1FA;
+  --violet:#7A2FCF; --violet-b:#9B4DF2; --violet-s:#F3E9FF;
+  --teal:#0B8577;   --teal-b:#12C0AA;   --teal-s:#DCF7F2;
+  --green:#12874C;  --green-b:#22B865;  --green-s:#DEF6E8;
+  --sky:#0C6FC4;    --sky-b:#2E9BF0;    --sky-s:#E2F1FF;
+  --rose:#C42B72;   --rose-b:#F0509A;   --rose-s:#FFE7F1;
+  --shadow:0 1px 2px rgba(30,45,120,.06),0 10px 30px -14px rgba(30,45,120,.28);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  background-image:
+    radial-gradient(900px 460px at 6% -8%, rgba(74,93,240,.16), transparent 70%),
+    radial-gradient(760px 420px at 98% 0%, rgba(18,192,170,.15), transparent 70%),
+    radial-gradient(700px 500px at 50% 120%, rgba(155,77,242,.10), transparent 70%),
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:auto,auto,auto,26px 26px,26px 26px;
+  background-repeat:no-repeat,no-repeat,no-repeat,repeat,repeat;
+}
+.serif{font-family:Georgia,"Iowan Old Style","Times New Roman",serif}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-variant-numeric:tabular-nums}
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+
+/* ── шапка ── */
+.hero{padding:52px 0 34px;border-bottom:1px solid var(--rule);
+  background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(255,255,255,.35) 60%,transparent)}
+.eyebrow{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--indigo);font-weight:600;margin:0 0 14px}
+h1{font-family:Georgia,"Iowan Old Style","Times New Roman",serif;
+  font-size:clamp(34px,5.6vw,54px);line-height:1.08;margin:0 0 14px;
+  letter-spacing:-.02em;text-wrap:balance;font-weight:400}
+h1 em{font-style:italic;color:var(--indigo)}
+.sub{margin:0;max-width:62ch;color:var(--ink2);font-size:16.5px}
+.stats{display:flex;flex-wrap:wrap;gap:10px;margin:30px 0 0}
+.st{flex:1 1 150px;padding:15px 18px;border-radius:12px;
+  background:var(--acc-s);border:1px solid var(--acc-b);box-shadow:var(--shadow)}
+.st:nth-child(1){--acc:var(--indigo);--acc-b:var(--indigo-b);--acc-s:var(--indigo-s)}
+.st:nth-child(2){--acc:var(--teal);--acc-b:var(--teal-b);--acc-s:var(--teal-s)}
+.st:nth-child(3){--acc:var(--red);--acc-b:var(--red-b);--acc-s:var(--red-s)}
+.st:nth-child(4){--acc:var(--violet);--acc-b:var(--violet-b);--acc-s:var(--violet-s)}
+.st:nth-child(5){--acc:var(--green);--acc-b:var(--green-b);--acc-s:var(--green-s)}
+.st b{display:block;font-size:27px;line-height:1.1;letter-spacing:-.02em;color:var(--acc);
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-variant-numeric:tabular-nums}
+.st span{font-size:12.5px;color:var(--ink2);display:block;margin-top:3px}
+
+/* ── ось года ── */
+.axis{margin:38px 0 6px}
+.axis h2,.panel h2,.q-h h2{font-family:Georgia,"Iowan Old Style",serif;font-weight:400}
+.ax-scroll{overflow-x:auto;padding-bottom:8px}
+.ax-in{min-width:860px}
+.ax-qs{display:flex;gap:3px;margin-bottom:7px}
+.ax-q{background:var(--card);border:1px solid var(--rule);border-radius:8px;
+  padding:7px 11px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.ax-q span{font-size:13px;font-weight:600}
+.ax-q em{font-style:normal;font-size:12px;color:var(--ink3);
+  font-family:ui-monospace,Menlo,monospace}
+.ax-bs{display:flex;gap:3px;align-items:flex-end}
+.ax-b{flex-direction:column;display:flex;gap:4px;padding:0;border:0;background:none;
+  cursor:pointer;font:inherit;color:inherit}
+.ax-cells{display:flex;gap:1px;height:44px;align-items:stretch}
+.ax-cells i{flex:1;border-radius:1px;min-width:2px;transition:transform .12s,filter .12s;
+  transform-origin:bottom}
+.ax-b:hover .ax-cells i{filter:saturate(1.5)}
+.ax-cells i:hover{transform:scaleY(1.18)}
+.ax-lab{font-size:11px;color:var(--ink3);text-align:center;
+  font-family:ui-monospace,Menlo,monospace;border-top:1px solid var(--rule);padding-top:4px}
+.ax-b:hover .ax-lab{color:var(--indigo);border-color:var(--indigo)}
+.ax-b:focus-visible{outline:2px solid var(--indigo);outline-offset:3px;border-radius:3px}
+.c-new{background:var(--indigo-b)} .c-drill{background:var(--slate-b)}
+.c-sum{background:var(--violet-b)} .c-ctrl{background:var(--red-b)}
+.c-an{background:var(--teal-b)}    .c-oge{background:var(--green-b)}
+.ax-hint{font-size:13px;color:var(--ink3);margin:10px 0 0}
+.xlink{margin:26px 0 0}
+.xlink a{display:inline-flex;align-items:center;gap:9px;text-decoration:none;
+ background:var(--indigo);color:#fff;font-weight:600;font-size:14.5px;
+ padding:11px 20px;border-radius:4px;transition:opacity .15s}
+.xlink a:hover{opacity:.88}
+.xlink a:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.navbar{display:flex;flex-wrap:wrap;gap:9px;margin:26px 0 0}
+.navbar a{text-decoration:none;font-size:14px;font-weight:600;padding:9px 16px;
+ border-radius:4px;border:1px solid var(--rule);color:var(--ink2);background:var(--card)}
+.navbar a:hover{border-color:var(--indigo);color:var(--indigo)}
+.navbar a.on{background:var(--indigo);color:#fff;border-color:var(--indigo)}
+.navbar a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+/* ── легенда-фильтр ── */
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:7px 13px;
+  border:1px solid var(--rule);border-radius:999px;background:var(--card);
+  font:inherit;font-size:13.5px;color:var(--ink2);cursor:pointer;transition:.15s}
+.chip i{width:10px;height:10px;border-radius:3px;display:block}
+.chip b{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;color:var(--ink3);
+  font-weight:600}
+.chip:hover{border-color:var(--ink3)}
+.chip:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
+.chip.on{color:var(--ink);border-width:1px}
+.chip-new i{background:var(--indigo-b)} .chip-new.on{background:var(--indigo-s);border-color:var(--indigo-b);color:var(--indigo)}
+.chip-drill i{background:var(--slate-b)} .chip-drill.on{background:var(--slate-s);border-color:var(--slate-b);color:var(--slate)}
+.chip-sum i{background:var(--violet-b)} .chip-sum.on{background:var(--violet-s);border-color:var(--violet-b);color:var(--violet)}
+.chip-ctrl i{background:var(--red-b)} .chip-ctrl.on{background:var(--red-s);border-color:var(--red-b);color:var(--red)}
+.chip-an i{background:var(--teal-b)} .chip-an.on{background:var(--teal-s);border-color:var(--teal-b);color:var(--teal)}
+.chip-oge i{background:var(--green-b)} .chip-oge.on{background:var(--green-s);border-color:var(--green-b);color:var(--green)}
+body.filtering .les{opacity:.28}
+body.filtering .les.hit{opacity:1}
+body.filtering .ax-cells i{opacity:.22}
+body.filtering .ax-cells i.hit{opacity:1}
+
+/* ── четверти ── */
+.quarter{margin:56px 0 0;scroll-margin-top:20px}
+/* у каждой четверти свой цвет */
+#q0{--qc:var(--indigo);--qc-b:var(--indigo-b);--qc-s:var(--indigo-s)}
+#q1{--qc:var(--teal);--qc-b:var(--teal-b);--qc-s:var(--teal-s)}
+#q2{--qc:var(--violet);--qc-b:var(--violet-b);--qc-s:var(--violet-s)}
+#q3{--qc:var(--green);--qc-b:var(--green-b);--qc-s:var(--green-s)}
+.q-h{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;
+  padding:10px 16px;border-radius:12px;background:var(--qc-s);
+  border:1px solid var(--qc-b);border-left:6px solid var(--qc-b);margin-bottom:22px}
+.q-h h2{font-size:30px;margin:0;letter-spacing:-.01em;color:var(--qc)}
+.q-h p{margin:0;color:var(--ink2);font-size:14px;
+  font-family:ui-monospace,Menlo,monospace}
+.blks{display:flex;flex-direction:column;gap:18px}
+/* блок — цветная плашка; цвет идёт по кругу из шести */
+.blk{--acc:var(--indigo);--acc-b:var(--indigo-b);--acc-s:var(--indigo-s);
+  background:var(--acc-s);border:1px solid var(--acc-b);border-top:5px solid var(--acc-b);
+  border-radius:14px;box-shadow:var(--shadow);scroll-margin-top:16px;overflow:hidden}
+#blk1,#blk7,#blk13{--acc:var(--teal);--acc-b:var(--teal-b);--acc-s:var(--teal-s)}
+#blk2,#blk8,#blk14{--acc:var(--violet);--acc-b:var(--violet-b);--acc-s:var(--violet-s)}
+#blk3,#blk9,#blk15{--acc:var(--green);--acc-b:var(--green-b);--acc-s:var(--green-s)}
+#blk4,#blk10{--acc:var(--sky);--acc-b:var(--sky-b);--acc-s:var(--sky-s)}
+#blk5,#blk11{--acc:var(--rose);--acc-b:var(--rose-b);--acc-s:var(--rose-s)}
+.blk.flash{animation:fl 1.1s ease}
+@keyframes fl{0%,100%{box-shadow:var(--shadow)}
+  18%{box-shadow:0 0 0 4px var(--acc-b),var(--shadow)}}
+.blk-h{display:flex;justify-content:space-between;align-items:center;gap:16px;
+  padding:14px 20px}
+.blk-h h3{margin:0;font-size:19px;line-height:1.3;font-weight:600;text-wrap:balance;
+  color:var(--acc)}
+.blk-m{display:flex;gap:7px;flex-shrink:0;align-items:center}
+.b-hrs{background:var(--acc-b);color:#fff;border-radius:999px;padding:4px 12px;
+  font-size:13px;font-weight:600;font-family:ui-monospace,Menlo,monospace;white-space:nowrap}
+.b-ctrl{background:#fff;color:var(--red);border:1px solid var(--red-b);
+  border-radius:999px;padding:4px 11px;
+  font-size:12.5px;font-weight:600;white-space:nowrap}
+.blk-d{margin-top:0}
+.blk-s{cursor:pointer;list-style:none;padding:11px 20px;border-top:1px solid var(--acc-b);
+  font-size:13.5px;font-weight:600;color:var(--acc);user-select:none;
+  display:flex;align-items:center;gap:8px}
+.blk-s::-webkit-details-marker{display:none}
+.blk-s::before{content:"";width:7px;height:7px;border-right:1.6px solid currentColor;
+  border-bottom:1.6px solid currentColor;transform:rotate(45deg);margin-bottom:2px;
+  transition:transform .18s}
+.blk-d[open] .blk-s::before{transform:rotate(-135deg);margin-bottom:-2px}
+.blk-s:hover{background:rgba(255,255,255,.65)}
+.blk-s:focus-visible{outline:2px solid var(--acc);outline-offset:-2px}
+.blk-d[open] .op,.blk-d:not([open]) .cl{display:none}
+
+/* ── уроки: таблица как в поурочном плане ── */
+.les-wrap{border-top:1px solid var(--acc-b);background:var(--card);overflow-x:auto}
+.lt{width:100%;min-width:940px;border-collapse:collapse;font-size:13.5px}
+.lt th{text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;
+  font-weight:600;color:var(--acc);background:var(--acc-s);
+  padding:9px 12px;border-bottom:1px solid var(--acc-b);white-space:nowrap}
+.lt td{padding:9px 12px;border-bottom:1px solid var(--rule);vertical-align:top;
+  color:var(--ink2);line-height:1.4}
+.lt tbody tr{transition:opacity .18s,background .12s}
+.lt tbody tr:nth-child(2n){background:var(--card2)}
+.lt tbody tr:hover{background:var(--acc-s)}
+.lt tbody tr:last-child td{border-bottom:0}
+.c-n{width:38px;font-family:ui-monospace,Menlo,monospace;font-size:12px;
+  color:var(--ink3);font-variant-numeric:tabular-nums}
+.c-d{width:72px;font-family:ui-monospace,Menlo,monospace;font-size:12px;
+  color:var(--ink2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.c-d em{font-style:normal;color:var(--ink3);margin-left:4px;font-size:11px}
+.c-pt{width:64px;font-family:ui-monospace,Menlo,monospace;font-size:12px;
+  color:var(--ink3);white-space:nowrap}
+.c-t{width:20%;color:var(--ink);font-size:14px}
+.c-tp{width:104px}
+.c-g{width:20%}
+.c-c{width:17%;font-size:13px}
+.c-hw{width:15%;font-size:13px;color:var(--ink3)}
+.badge{display:inline-block;font-size:11.5px;font-weight:600;border-radius:6px;
+  padding:2px 9px;white-space:nowrap;line-height:1.5}
+.t-new .badge{background:var(--indigo-s);color:var(--indigo)}
+.t-drill .badge{background:var(--slate-s);color:var(--slate)}
+.t-sum .badge{background:var(--violet-s);color:var(--violet)}
+.t-ctrl .badge{background:#fff;color:var(--red)}
+.t-an .badge{background:var(--teal-s);color:var(--teal)}
+.t-oge .badge{background:var(--green-s);color:var(--green)}
+/* восемь столбцов на узком экране не помещаются — таблица едет вбок */
+.lt{min-width:1060px}
+.ev{display:block;font-size:11.5px;color:var(--violet);margin-top:2px}
+.lt tr.t-ctrl .c-t{font-weight:600;color:var(--red)}
+.lt tr.t-ctrl{background:var(--red-s)!important}
+
+/* ── панели ── */
+.panel{--acc:var(--indigo);--acc-b:var(--indigo-b);--acc-s:var(--indigo-s);
+  margin:60px 0 0;background:var(--card);border:1px solid var(--acc-b);
+  border-top:5px solid var(--acc-b);
+  border-radius:14px;padding:24px;box-shadow:var(--shadow)}
+.panel:nth-of-type(2n){--acc:var(--violet);--acc-b:var(--violet-b);--acc-s:var(--violet-s)}
+.panel:nth-of-type(3n){--acc:var(--teal);--acc-b:var(--teal-b);--acc-s:var(--teal-s)}
+.panel h2{font-size:24px;margin:0 0 6px;letter-spacing:-.01em;color:var(--acc)}
+.panel .lead{margin:0 0 20px;color:var(--ink3);font-size:14.5px;max-width:70ch}
+.ces{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.ce{display:grid;grid-template-columns:110px 1fr minmax(0,290px);gap:16px;
+  padding:11px 0;border-bottom:1px solid var(--rule);align-items:baseline}
+.ce:last-child{border-bottom:0}
+.ce-d{font-family:ui-monospace,Menlo,monospace;font-size:13px;
+  font-variant-numeric:tabular-nums;color:var(--ink2)}
+.ce-d em{font-style:normal;color:var(--ink3);margin-left:5px;font-size:11.5px}
+.ce-t{font-size:15px;font-weight:500}
+.ce-f{font-size:13px;color:var(--ink3)}
+.tbl{width:100%;border-collapse:collapse;font-size:14.5px}
+.tbl th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--ink3);padding:0 12px 9px 0;border-bottom:1px solid var(--rule);font-weight:600}
+.tbl td{padding:11px 12px 11px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+.tbl tr:last-child td{border-bottom:0}
+.tbl .num{text-align:right;font-family:ui-monospace,Menlo,monospace;
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl tfoot td{font-weight:600;border-top:2px solid var(--ink);border-bottom:0;
+  padding-top:12px}
+.scroll{overflow-x:auto}
+
+footer{margin:64px 0 0;padding:26px 0 60px;border-top:1px solid var(--rule);
+  font-size:13px;color:var(--ink3);max-width:88ch}
+footer b{color:var(--ink2);font-weight:600}
+
+/* ── подсказка на оси ── */
+#tip{position:fixed;pointer-events:none;z-index:50;background:var(--ink);
+  color:var(--paper);padding:7px 11px;border-radius:4px;font-size:12.5px;
+  max-width:290px;opacity:0;transition:opacity .12s;box-shadow:var(--shadow);line-height:1.4}
+#tip.on{opacity:1}
+#tip em{font-style:normal;opacity:.72;display:block;font-size:11.5px;margin-top:2px}
+
+@media (max-width:720px){
+  .lt{font-size:12.5px;min-width:820px}
+  .lt th,.lt td{padding:8px 10px}
+  .ce{grid-template-columns:1fr;gap:3px}
+  .st{flex:1 1 45%}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+}
+</style>
+<style>
+.lt-short .c-t{width:auto}
+.lt-short .c-tp{width:150px}
+.lt-short{min-width:560px}
+.navbar{display:flex;flex-wrap:wrap;gap:9px;margin:0 0 26px}
+.navbar a{text-decoration:none;font-size:14px;font-weight:600;padding:9px 16px;
+ border-radius:4px;border:1px solid var(--rule);color:var(--ink2);background:var(--card)}
+.navbar a:hover{border-color:var(--indigo);color:var(--indigo)}
+.navbar a.on{background:var(--indigo);color:#fff;border-color:var(--indigo)}
+.navbar a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+</style>
+</head>
+<body>
+
+
+<header class="hero"><div class="wrap">
+  <p class="eyebrow">МАОУ «Школа Гагарина» · 2026/2027 учебный год</p>
+  <h1>Геометрия,<br><em>9 класс</em></h1>
+  <p class="sub">Учитель — Д. Дружков. Учебник: Л. С. Атанасян, В. Ф. Бутузов, С. Б. Кадомцев и др. Геометрия. 7—9 классы.</p>
+  <div class="stats">
+    <div class="st"><b>68</b><span>часов за год, 2 часа в неделю</span></div>
+    <div class="st"><b>9</b><span>разделов</span></div>
+    <div class="st"><b>6</b><span>оценочных мероприятий</span></div>
+    <div class="st"><b>среда, два урока подряд</b><span>день в расписании</span></div>
+  </div>
+</div></header>
+
+<main class="wrap">
+<nav class="navbar">
+  <a href="../">Алгебра</a>
+  <a href="../geometriya/">Геометрия</a>
+  <a href="../veroyatnost/">Вероятность и статистика</a>
+  <a href="../temy/">Все три курса одним листом</a>
+</nav>
+
+<section class="axis">
+  <h2 style="font-size:24px;margin:0 0 4px">Год целиком</h2>
+  <p class="ax-hint">Каждое деление — один урок. Наведите на деление, чтобы увидеть
+  тему; нажмите на раздел, чтобы перейти к нему.</p>
+  <div class="ax-scroll"><div class="ax-in">
+    <div class="ax-qs"><div class="ax-q" style="flex:16"><span>I четверть</span><em>16 ч</em></div><div class="ax-q" style="flex:14"><span>II четверть</span><em>14 ч</em></div><div class="ax-q" style="flex:20"><span>III четверть</span><em>20 ч</em></div><div class="ax-q" style="flex:18"><span>IV четверть</span><em>18 ч</em></div></div>
+    <div class="ax-bs"><button class="ax-b" style="flex:3" data-b="0" aria-label="Повторение курса 7—8 классов. Входная диагностика, 3 часов"><span class="ax-cells"><i class="c-drill" data-l="1"></i><i class="c-drill" data-l="2"></i><i class="c-ctrl" data-l="3"></i></span><span class="ax-lab">3</span></button><button class="ax-b" style="flex:8" data-b="1" aria-label="Глава 9. Векторы, 8 часов"><span class="ax-cells"><i class="c-new" data-l="4"></i><i class="c-new" data-l="5"></i><i class="c-new" data-l="6"></i><i class="c-new" data-l="7"></i><i class="c-new" data-l="8"></i><i class="c-new" data-l="9"></i><i class="c-new" data-l="10"></i><i class="c-new" data-l="11"></i></span><span class="ax-lab">8</span></button><button class="ax-b" style="flex:10" data-b="2" aria-label="Глава 10. Метод координат, 10 часов"><span class="ax-cells"><i class="c-new" data-l="12"></i><i class="c-new" data-l="13"></i><i class="c-new" data-l="14"></i><i class="c-new" data-l="15"></i><i class="c-new" data-l="16"></i><i class="c-drill" data-l="17"></i><i class="c-new" data-l="18"></i><i class="c-new" data-l="19"></i><i class="c-sum" data-l="20"></i><i class="c-ctrl" data-l="21"></i></span><span class="ax-lab">10</span></button><button class="ax-b" style="flex:11" data-b="3" aria-label="Глава 11. Соотношения между сторонами и углами треугольника. Скалярное произведение векторов, 11 часов"><span class="ax-cells"><i class="c-an" data-l="22"></i><i class="c-new" data-l="23"></i><i class="c-new" data-l="24"></i><i class="c-new" data-l="25"></i><i class="c-new" data-l="26"></i><i class="c-new" data-l="27"></i><i class="c-new" data-l="28"></i><i class="c-new" data-l="29"></i><i class="c-new" data-l="30"></i><i class="c-new" data-l="31"></i><i class="c-ctrl" data-l="32"></i></span><span class="ax-lab">11</span></button><button class="ax-b" style="flex:10" data-b="4" aria-label="Глава 12. Длина окружности и площадь круга, 10 часов"><span class="ax-cells"><i class="c-an" data-l="33"></i><i class="c-new" data-l="34"></i><i class="c-new" data-l="35"></i><i class="c-new" data-l="36"></i><i class="c-drill" data-l="37"></i><i class="c-new" data-l="38"></i><i class="c-new" data-l="39"></i><i class="c-new" data-l="40"></i><i class="c-sum" data-l="41"></i><i class="c-ctrl" data-l="42"></i></span><span class="ax-lab">10</span></button><button class="ax-b" style="flex:8" data-b="5" aria-label="Глава 13. Движения, 8 часов"><span class="ax-cells"><i class="c-an" data-l="43"></i><i class="c-new" data-l="44"></i><i class="c-new" data-l="45"></i><i class="c-new" data-l="46"></i><i class="c-drill" data-l="47"></i><i class="c-oge" data-l="48"></i><i class="c-drill" data-l="49"></i><i class="c-ctrl" data-l="50"></i></span><span class="ax-lab">8</span></button><button class="ax-b" style="flex:4" data-b="6" aria-label="Начальные сведения из стереометрии, 4 часов"><span class="ax-cells"><i class="c-an" data-l="51"></i><i class="c-new" data-l="52"></i><i class="c-new" data-l="53"></i><i class="c-drill" data-l="54"></i></span><span class="ax-lab">4</span></button><button class="ax-b" style="flex:1" data-b="7" aria-label="Об аксиомах планиметрии, 1 часов"><span class="ax-cells"><i class="c-new" data-l="55"></i></span><span class="ax-lab">1</span></button><button class="ax-b" style="flex:13" data-b="8" aria-label="Итоговое повторение. Подготовка к ОГЭ, 13 часов"><span class="ax-cells"><i class="c-drill" data-l="56"></i><i class="c-drill" data-l="57"></i><i class="c-drill" data-l="58"></i><i class="c-drill" data-l="59"></i><i class="c-drill" data-l="60"></i><i class="c-drill" data-l="61"></i><i class="c-drill" data-l="62"></i><i class="c-drill" data-l="63"></i><i class="c-oge" data-l="64"></i><i class="c-oge" data-l="65"></i><i class="c-ctrl" data-l="66"></i><i class="c-new" data-l="67"></i><i class="c-new" data-l="68"></i></span><span class="ax-lab">13</span></button></div>
+  </div></div>
+  <div class="legend"><button class="chip chip-new" data-t="н"><i></i>Изучение нового<b>38</b></button><button class="chip chip-drill" data-t="о"><i></i>Отработка<b>15</b></button><button class="chip chip-sum" data-t="б"><i></i>Обобщение<b>2</b></button><button class="chip chip-ctrl" data-t="к"><i></i>Контроль<b>6</b></button><button class="chip chip-an" data-t="а"><i></i>Анализ работы<b>4</b></button><button class="chip chip-oge" data-t="п"><i></i>Практикум ОГЭ<b>3</b></button></div>
+  <p class="ax-hint">Нажмите на тип урока, чтобы подсветить его во всём году.</p>
+</section>
+
+<section class="quarter"><div class="q-h"><h2>I четверть</h2><p>01.09.2026 — 25.10.2026 · 16 часов</p></div><div class="blks"><article class="blk" id="blk0"><header class="blk-h"><h3>Повторение курса 7—8 классов. Входная диагностика</h3><div class="blk-m"><span class="b-hrs">3 ч</span><span class="b-ctrl">1 оценочн.</span></div></header><details class="blk-d"><summary class="blk-s"><span class="op">Раскрыть 3 уроков</span><span class="cl">Свернуть</span></summary><div class="les-wrap"><table class="lt lt-short"><thead><tr><th class="c-n">№</th><th class="c-d">Дата</th><th class="c-t">Тема урока</th><th class="c-tp">Тип</th></tr></thead><tbody><tr class="les t-drill" data-t="о"><td class="c-n">1</td><td class="c-d">02.09<em>Ср</em></td><td class="c-t">Повторение. Треугольники. Признаки равенства и подобия</td><td class="c-tp"><span class="badge">Отработка</span></td></tr><tr class="les t-drill" data-t="о"><td class="c-n">2</td><td class="c-d">02.09<em>Ср</em></td><td class="c-t">Повторение. Четырёхугольники. Окружность. Площади</td><td class="c-tp"><span class="badge">Отработка</span></td></tr><tr class="les t-ctrl" data-t="к"><td class="c-n">3</td><td class="c-d">09.09<em>Ср</em></td><td class="c-t">Входная диагностическая работа</td><td class="c-tp"><span class="badge">Контроль</span></td></tr></tbody></table></div></details></article><article class="blk" id="blk1"><header class="blk-h"><h3>Глава 9. Векторы</h3><div class="blk-m"><span class="b-hrs">8 ч</span></div></header><details class="blk-d"><summary class="blk-s"><span class="op">Раскрыть 8 уроков</span><span class="cl">Свернуть</span></summary><div class="les-wrap"><table class="lt lt-short"><thead><tr><th class="c-n">№</th><th class="c-d">Дата</th><th class="c-t">Тема урока</th><th class="c-tp">Тип</th></tr></thead><tbody><tr class="les t-new" data-t="н"><td class="c-n">4</td><td class="c-d">09.09<em>Ср</em></td><td class="c-t">Понятие вектора. Равенство векторов</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">5</td><td class="c-d">16.09<em>Ср</em></td><td class="c-t">Откладывание вектора от данной точки</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">6</td><td class="c-d">16.09<em>Ср</em></td><td class="c-t">Сумма двух векторов. Правило треугольника и параллелограмма</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">7</td><td class="c-d">23.09<em>Ср</em></td><td class="c-t">Сумма нескольких векторов. Правило многоугольника</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">8</td><td class="c-d">23.09<em>Ср</em></td><td class="c-t">Вычитание векторов</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">9</td><td class="c-d">30.09<em>Ср</em></td><td class="c-t">Умножение вектора на число</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">10</td><td class="c-d">30.09<em>Ср</em></td><td class="c-t">Применение векторов к решению задач</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">11</td><td class="c-d">07.10<em>Ср</em></td><td class="c-t">Средняя линия трапеции</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr></tbody></table></div></details></article><article class="blk" id="blk2"><header class="blk-h"><h3>Глава 10. Метод координат</h3><div class="blk-m"><span class="b-hrs">10 ч</span><span class="b-ctrl">1 оценочн.</span></div></header><details class="blk-d"><summary class="blk-s"><span class="op">Раскрыть 10 уроков</span><span class="cl">Свернуть</span></summary><div class="les-wrap"><table class="lt lt-short"><thead><tr><th class="c-n">№</th><th class="c-d">Дата</th><th class="c-t">Тема урока</th><th class="c-tp">Тип</th></tr></thead><tbody><tr class="les t-new" data-t="н"><td class="c-n">12</td><td class="c-d">07.10<em>Ср</em></td><td class="c-t">Разложение вектора по двум неколлинеарным векторам</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">13</td><td class="c-d">14.10<em>Ср</em></td><td class="c-t">Координаты вектора</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">14</td><td class="c-d">14.10<em>Ср</em></td><td class="c-t">Действия над векторами в координатах</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">15</td><td class="c-d">21.10<em>Ср</em></td><td class="c-t">Простейшие задачи в координатах: координаты середины отрезка</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">16</td><td class="c-d">21.10<em>Ср</em></td><td class="c-t">Простейшие задачи в координатах: длина вектора, расстояние между точками</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-drill" data-t="о"><td class="c-n">17</td><td class="c-d">11.11<em>Ср</em></td><td class="c-t">Решение задач методом координат</td><td class="c-tp"><span class="badge">Отработка</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">18</td><td class="c-d">11.11<em>Ср</em></td><td class="c-t">Уравнение линии на плоскости. Уравнение окружности</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">19</td><td class="c-d">18.11<em>Ср</em></td><td class="c-t">Уравнение прямой</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-sum" data-t="б"><td class="c-n">20</td><td class="c-d">18.11<em>Ср</em></td><td class="c-t">Обобщающий урок «Векторы. Метод координат»</td><td class="c-tp"><span class="badge">Обобщение</span></td></tr><tr class="les t-ctrl" data-t="к"><td class="c-n">21</td><td class="c-d">25.11<em>Ср</em></td><td class="c-t">Контрольная работа № 1 «Векторы. Метод координат»</td><td class="c-tp"><span class="badge">Контроль</span></td></tr></tbody></table></div></details></article></div></section><section class="quarter"><div class="q-h"><h2>II четверть</h2><p>05.11.2026 — 29.12.2026 · 14 часов</p></div><div class="blks"><article class="blk" id="blk3"><header class="blk-h"><h3>Глава 11. Соотношения между сторонами и углами треугольника. Скалярное произведение векторов</h3><div class="blk-m"><span class="b-hrs">11 ч</span><span class="b-ctrl">1 оценочн.</span></div></header><details class="blk-d"><summary class="blk-s"><span class="op">Раскрыть 11 уроков</span><span class="cl">Свернуть</span></summary><div class="les-wrap"><table class="lt lt-short"><thead><tr><th class="c-n">№</th><th class="c-d">Дата</th><th class="c-t">Тема урока</th><th class="c-tp">Тип</th></tr></thead><tbody><tr class="les t-an" data-t="а"><td class="c-n">22</td><td class="c-d">25.11<em>Ср</em></td><td class="c-t">Анализ контрольной работы. Синус, косинус, тангенс угла от 0° до 180°</td><td class="c-tp"><span class="badge">Анализ работы</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">23</td><td class="c-d">02.12<em>Ср</em></td><td class="c-t">Основное тригонометрическое тождество. Формулы приведения</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">24</td><td class="c-d">02.12<em>Ср</em></td><td class="c-t">Формулы для вычисления координат точки</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">25</td><td class="c-d">09.12<em>Ср</em></td><td class="c-t">Теорема о площади треугольника</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">26</td><td class="c-d">09.12<em>Ср</em></td><td class="c-t">Теорема синусов</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">27</td><td class="c-d">16.12<em>Ср</em></td><td class="c-t">Теорема косинусов</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">28</td><td class="c-d">16.12<em>Ср</em></td><td class="c-t">Решение треугольников</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">29</td><td class="c-d">23.12<em>Ср</em></td><td class="c-t">Измерительные работы на местности</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">30</td><td class="c-d">23.12<em>Ср</em></td><td class="c-t">Скалярное произведение векторов</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">31</td><td class="c-d">13.01<em>Ср</em></td><td class="c-t">Скалярное произведение в координатах. Свойства</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-ctrl" data-t="к"><td class="c-n">32</td><td class="c-d">13.01<em>Ср</em></td><td class="c-t">Контрольная работа № 2 «Соотношения между сторонами и углами треугольника»</td><td class="c-tp"><span class="badge">Контроль</span></td></tr></tbody></table></div></details></article></div></section><section class="quarter"><div class="q-h"><h2>III четверть</h2><p>11.01.2027 — 21.03.2027 · 20 часов</p></div><div class="blks"><article class="blk" id="blk4"><header class="blk-h"><h3>Глава 12. Длина окружности и площадь круга</h3><div class="blk-m"><span class="b-hrs">10 ч</span><span class="b-ctrl">1 оценочн.</span></div></header><details class="blk-d"><summary class="blk-s"><span class="op">Раскрыть 10 уроков</span><span class="cl">Свернуть</span></summary><div class="les-wrap"><table class="lt lt-short"><thead><tr><th class="c-n">№</th><th class="c-d">Дата</th><th class="c-t">Тема урока</th><th class="c-tp">Тип</th></tr></thead><tbody><tr class="les t-an" data-t="а"><td class="c-n">33</td><td class="c-d">20.01<em>Ср</em></td><td class="c-t">Анализ контрольной работы. Правильный многоугольник</td><td class="c-tp"><span class="badge">Анализ работы</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">34</td><td class="c-d">20.01<em>Ср</em></td><td class="c-t">Окружность, описанная около правильного многоугольника</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">35</td><td class="c-d">27.01<em>Ср</em></td><td class="c-t">Окружность, вписанная в правильный многоугольник<span class="ev">День рождения П. П. Бажова</span></td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">36</td><td class="c-d">27.01<em>Ср</em></td><td class="c-t">Формулы площади правильного многоугольника, его стороны и радиуса вписанной окружности<span class="ev">День рождения П. П. Бажова</span></td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-drill" data-t="о"><td class="c-n">37</td><td class="c-d">03.02<em>Ср</em></td><td class="c-t">Построение правильных многоугольников. Решение задач</td><td class="c-tp"><span class="badge">Отработка</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">38</td><td class="c-d">03.02<em>Ср</em></td><td class="c-t">Длина окружности. Длина дуги окружности</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">39</td><td class="c-d">10.02<em>Ср</em></td><td class="c-t">Площадь круга</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">40</td><td class="c-d">10.02<em>Ср</em></td><td class="c-t">Площадь кругового сектора</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-sum" data-t="б"><td class="c-n">41</td><td class="c-d">17.02<em>Ср</em></td><td class="c-t">Обобщающий урок. Задания ОГЭ по теме «Окружность»</td><td class="c-tp"><span class="badge">Обобщение</span></td></tr><tr class="les t-ctrl" data-t="к"><td class="c-n">42</td><td class="c-d">17.02<em>Ср</em></td><td class="c-t">Контрольная работа № 3 «Длина окружности и площадь круга»</td><td class="c-tp"><span class="badge">Контроль</span></td></tr></tbody></table></div></details></article><article class="blk" id="blk5"><header class="blk-h"><h3>Глава 13. Движения</h3><div class="blk-m"><span class="b-hrs">8 ч</span><span class="b-ctrl">1 оценочн.</span></div></header><details class="blk-d"><summary class="blk-s"><span class="op">Раскрыть 8 уроков</span><span class="cl">Свернуть</span></summary><div class="les-wrap"><table class="lt lt-short"><thead><tr><th class="c-n">№</th><th class="c-d">Дата</th><th class="c-t">Тема урока</th><th class="c-tp">Тип</th></tr></thead><tbody><tr class="les t-an" data-t="а"><td class="c-n">43</td><td class="c-d">24.02<em>Ср</em></td><td class="c-t">Анализ контрольной работы. Отображение плоскости на себя. Понятие движения<span class="ev">День защитника Отечества</span></td><td class="c-tp"><span class="badge">Анализ работы</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">44</td><td class="c-d">24.02<em>Ср</em></td><td class="c-t">Осевая и центральная симметрия<span class="ev">День защитника Отечества</span></td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">45</td><td class="c-d">03.03<em>Ср</em></td><td class="c-t">Параллельный перенос</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">46</td><td class="c-d">03.03<em>Ср</em></td><td class="c-t">Поворот</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-drill" data-t="о"><td class="c-n">47</td><td class="c-d">10.03<em>Ср</em></td><td class="c-t">Параллельный перенос и поворот. Решение задач</td><td class="c-tp"><span class="badge">Отработка</span></td></tr><tr class="les t-oge" data-t="п"><td class="c-n">48</td><td class="c-d">10.03<em>Ср</em></td><td class="c-t">Наложения и движения. Задания ОГЭ на симметрию</td><td class="c-tp"><span class="badge">Практикум ОГЭ</span></td></tr><tr class="les t-drill" data-t="о"><td class="c-n">49</td><td class="c-d">17.03<em>Ср</em></td><td class="c-t">Решение задач по теме «Движения»</td><td class="c-tp"><span class="badge">Отработка</span></td></tr><tr class="les t-ctrl" data-t="к"><td class="c-n">50</td><td class="c-d">17.03<em>Ср</em></td><td class="c-t">Контрольная работа № 4 «Движения»</td><td class="c-tp"><span class="badge">Контроль</span></td></tr></tbody></table></div></details></article></div></section><section class="quarter"><div class="q-h"><h2>IV четверть</h2><p>29.03.2027 — 28.05.2027 · 18 часов</p></div><div class="blks"><article class="blk" id="blk6"><header class="blk-h"><h3>Начальные сведения из стереометрии</h3><div class="blk-m"><span class="b-hrs">4 ч</span></div></header><details class="blk-d"><summary class="blk-s"><span class="op">Раскрыть 4 уроков</span><span class="cl">Свернуть</span></summary><div class="les-wrap"><table class="lt lt-short"><thead><tr><th class="c-n">№</th><th class="c-d">Дата</th><th class="c-t">Тема урока</th><th class="c-tp">Тип</th></tr></thead><tbody><tr class="les t-an" data-t="а"><td class="c-n">51</td><td class="c-d">31.03<em>Ср</em></td><td class="c-t">Анализ контрольной работы. Предмет стереометрии. Многогранники</td><td class="c-tp"><span class="badge">Анализ работы</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">52</td><td class="c-d">31.03<em>Ср</em></td><td class="c-t">Призма. Параллелепипед. Объём тела</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">53</td><td class="c-d">07.04<em>Ср</em></td><td class="c-t">Пирамида. Цилиндр и конус</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-drill" data-t="о"><td class="c-n">54</td><td class="c-d">07.04<em>Ср</em></td><td class="c-t">Сфера и шар. Решение задач</td><td class="c-tp"><span class="badge">Отработка</span></td></tr></tbody></table></div></details></article><article class="blk" id="blk7"><header class="blk-h"><h3>Об аксиомах планиметрии</h3><div class="blk-m"><span class="b-hrs">1 ч</span></div></header><details class="blk-d"><summary class="blk-s"><span class="op">Раскрыть 1 уроков</span><span class="cl">Свернуть</span></summary><div class="les-wrap"><table class="lt lt-short"><thead><tr><th class="c-n">№</th><th class="c-d">Дата</th><th class="c-t">Тема урока</th><th class="c-tp">Тип</th></tr></thead><tbody><tr class="les t-new" data-t="н"><td class="c-n">55</td><td class="c-d">14.04<em>Ср</em></td><td class="c-t">Об аксиомах планиметрии</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr></tbody></table></div></details></article><article class="blk" id="blk8"><header class="blk-h"><h3>Итоговое повторение. Подготовка к ОГЭ</h3><div class="blk-m"><span class="b-hrs">13 ч</span><span class="b-ctrl">1 оценочн.</span></div></header><details class="blk-d"><summary class="blk-s"><span class="op">Раскрыть 13 уроков</span><span class="cl">Свернуть</span></summary><div class="les-wrap"><table class="lt lt-short"><thead><tr><th class="c-n">№</th><th class="c-d">Дата</th><th class="c-t">Тема урока</th><th class="c-tp">Тип</th></tr></thead><tbody><tr class="les t-drill" data-t="о"><td class="c-n">56</td><td class="c-d">14.04<em>Ср</em></td><td class="c-t">Повторение. Треугольники: равенство, подобие, площадь</td><td class="c-tp"><span class="badge">Отработка</span></td></tr><tr class="les t-drill" data-t="о"><td class="c-n">57</td><td class="c-d">21.04<em>Ср</em></td><td class="c-t">Повторение. Прямоугольный треугольник. Теорема Пифагора</td><td class="c-tp"><span class="badge">Отработка</span></td></tr><tr class="les t-drill" data-t="о"><td class="c-n">58</td><td class="c-d">21.04<em>Ср</em></td><td class="c-t">Повторение. Тригонометрия в прямоугольном треугольнике</td><td class="c-tp"><span class="badge">Отработка</span></td></tr><tr class="les t-drill" data-t="о"><td class="c-n">59</td><td class="c-d">28.04<em>Ср</em></td><td class="c-t">Повторение. Четырёхугольники и их свойства</td><td class="c-tp"><span class="badge">Отработка</span></td></tr><tr class="les t-drill" data-t="о"><td class="c-n">60</td><td class="c-d">28.04<em>Ср</em></td><td class="c-t">Повторение. Окружность: углы, касательные, хорды</td><td class="c-tp"><span class="badge">Отработка</span></td></tr><tr class="les t-drill" data-t="о"><td class="c-n">61</td><td class="c-d">05.05<em>Ср</em></td><td class="c-t">Повторение. Вписанные и описанные окружности</td><td class="c-tp"><span class="badge">Отработка</span></td></tr><tr class="les t-drill" data-t="о"><td class="c-n">62</td><td class="c-d">05.05<em>Ср</em></td><td class="c-t">Повторение. Площади фигур</td><td class="c-tp"><span class="badge">Отработка</span></td></tr><tr class="les t-drill" data-t="о"><td class="c-n">63</td><td class="c-d">12.05<em>Ср</em></td><td class="c-t">Повторение. Векторы и координаты</td><td class="c-tp"><span class="badge">Отработка</span></td></tr><tr class="les t-oge" data-t="п"><td class="c-n">64</td><td class="c-d">12.05<em>Ср</em></td><td class="c-t">Задания ОГЭ № 15—19. Практикум</td><td class="c-tp"><span class="badge">Практикум ОГЭ</span></td></tr><tr class="les t-oge" data-t="п"><td class="c-n">65</td><td class="c-d">19.05<em>Ср</em></td><td class="c-t">Задания ОГЭ № 24—26. Практикум (задачи с доказательством)</td><td class="c-tp"><span class="badge">Практикум ОГЭ</span></td></tr><tr class="les t-ctrl" data-t="к"><td class="c-n">66</td><td class="c-d">19.05<em>Ср</em></td><td class="c-t">Итоговая контрольная работа</td><td class="c-tp"><span class="badge">Контроль</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">67</td><td class="c-d">26.05<em>Ср</em></td><td class="c-t">Анализ итоговой контрольной работы</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr><tr class="les t-new" data-t="н"><td class="c-n">68</td><td class="c-d">26.05<em>Ср</em></td><td class="c-t">Итоговое повторение. Оформление решения на экзамене</td><td class="c-tp"><span class="badge">Изучение нового</span></td></tr></tbody></table></div></details></article></div></section>
+
+<section class="panel">
+  <h2>График оценочных мероприятий</h2>
+  <p class="lead">Контрольные работы стоят в конце разделов. Входная диагностика
+  проводится без отметки.</p>
+  <ul class="ces"><li class="ce"><span class="ce-d">09.09.2026<em>Ср</em></span><span class="ce-t">Входная диагностическая работа</span><span class="ce-f">40 мин</span></li><li class="ce"><span class="ce-d">25.11.2026<em>Ср</em></span><span class="ce-t">Контрольная работа № 1 «Векторы. Метод координат»</span><span class="ce-f">40 мин</span></li><li class="ce"><span class="ce-d">13.01.2027<em>Ср</em></span><span class="ce-t">Контрольная работа № 2 «Соотношения между сторонами и углами треугольника»</span><span class="ce-f">40 мин</span></li><li class="ce"><span class="ce-d">17.02.2027<em>Ср</em></span><span class="ce-t">Контрольная работа № 3 «Длина окружности и площадь круга»</span><span class="ce-f">40 мин</span></li><li class="ce"><span class="ce-d">17.03.2027<em>Ср</em></span><span class="ce-t">Контрольная работа № 4 «Движения»</span><span class="ce-f">40 мин</span></li><li class="ce"><span class="ce-d">19.05.2027<em>Ср</em></span><span class="ce-t">Итоговая контрольная работа</span><span class="ce-f">40 мин</span></li></ul>
+</section>
+
+<section class="panel">
+  <h2>Соответствие федеральной программе</h2>
+  <p class="lead">Федеральная рабочая программа отводит на геометрию в 9 классе 68 часов. Учебный план школы даёт ровно столько же.</p>
+  <div class="scroll"><table class="tbl">
+    <thead><tr><th>Раздел федеральной программы</th><th class="num">Часов</th></tr></thead>
+    <tbody><tr><td>Преобразование подобия</td><td class="num">10</td></tr><tr><td>Тригонометрия. Теоремы косинусов и синусов. Решение треугольников</td><td class="num">16</td></tr><tr><td>Векторы</td><td class="num">12</td></tr><tr><td>Декартовы координаты</td><td class="num">9</td></tr><tr><td>Правильные многоугольники</td><td class="num">8</td></tr><tr><td>Движения плоскости</td><td class="num">6</td></tr><tr><td>Повторение, обобщение, систематизация</td><td class="num">7</td></tr></tbody>
+    <tfoot><tr><td>Итого по ФРП</td><td class="num">68</td></tr></tfoot>
+  </table></div>
+</section>
+
+<footer>
+  <p><b>Чем эта страница отличается от алгебры.</b> По алгебре у каждого урока
+  прописаны цель, вид контроля и домашнее задание. По этому курсу такой разбор
+  ещё не сделан, поэтому в таблице только тема и дата, а тип урока определён
+  по названию темы и на отдельных уроках может быть неточным.</p>
+</footer>
+</main>
+
+<div id="tip" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  var TIPS = {"1": {"t": "Повторение. Треугольники. Признаки равенства и подобия", "d": "02.09", "y": "Отработка"}, "2": {"t": "Повторение. Четырёхугольники. Окружность. Площади", "d": "02.09", "y": "Отработка"}, "3": {"t": "Входная диагностическая работа", "d": "09.09", "y": "Контроль"}, "4": {"t": "Понятие вектора. Равенство векторов", "d": "09.09", "y": "Изучение нового"}, "5": {"t": "Откладывание вектора от данной точки", "d": "16.09", "y": "Изучение нового"}, "6": {"t": "Сумма двух векторов. Правило треугольника и параллелограмма", "d": "16.09", "y": "Изучение нового"}, "7": {"t": "Сумма нескольких векторов. Правило многоугольника", "d": "23.09", "y": "Изучение нового"}, "8": {"t": "Вычитание векторов", "d": "23.09", "y": "Изучение нового"}, "9": {"t": "Умножение вектора на число", "d": "30.09", "y": "Изучение нового"}, "10": {"t": "Применение векторов к решению задач", "d": "30.09", "y": "Изучение нового"}, "11": {"t": "Средняя линия трапеции", "d": "07.10", "y": "Изучение нового"}, "12": {"t": "Разложение вектора по двум неколлинеарным векторам", "d": "07.10", "y": "Изучение нового"}, "13": {"t": "Координаты вектора", "d": "14.10", "y": "Изучение нового"}, "14": {"t": "Действия над векторами в координатах", "d": "14.10", "y": "Изучение нового"}, "15": {"t": "Простейшие задачи в координатах: координаты середины отрезка", "d": "21.10", "y": "Изучение нового"}, "16": {"t": "Простейшие задачи в координатах: длина вектора, расстояние между точками", "d": "21.10", "y": "Изучение нового"}, "17": {"t": "Решение задач методом координат", "d": "11.11", "y": "Отработка"}, "18": {"t": "Уравнение линии на плоскости. Уравнение окружности", "d": "11.11", "y": "Изучение нового"}, "19": {"t": "Уравнение прямой", "d": "18.11", "y": "Изучение нового"}, "20": {"t": "Обобщающий урок «Векторы. Метод координат»", "d": "18.11", "y": "Обобщение"}, "21": {"t": "Контрольная работа № 1 «Векторы. Метод координат»", "d": "25.11", "y": "Контроль"}, "22": {"t": "Анализ контрольной работы. Синус, косинус, тангенс угла от 0° до 180°", "d": "25.11", "y": "Анализ работы"}, "23": {"t": "Основное тригонометрическое тождество. Формулы приведения", "d": "02.12", "y": "Изучение нового"}, "24": {"t": "Формулы для вычисления координат точки", "d": "02.12", "y": "Изучение нового"}, "25": {"t": "Теорема о площади треугольника", "d": "09.12", "y": "Изучение нового"}, "26": {"t": "Теорема синусов", "d": "09.12", "y": "Изучение нового"}, "27": {"t": "Теорема косинусов", "d": "16.12", "y": "Изучение нового"}, "28": {"t": "Решение треугольников", "d": "16.12", "y": "Изучение нового"}, "29": {"t": "Измерительные работы на местности", "d": "23.12", "y": "Изучение нового"}, "30": {"t": "Скалярное произведение векторов", "d": "23.12", "y": "Изучение нового"}, "31": {"t": "Скалярное произведение в координатах. Свойства", "d": "13.01", "y": "Изучение нового"}, "32": {"t": "Контрольная работа № 2 «Соотношения между сторонами и углами треугольника»", "d": "13.01", "y": "Контроль"}, "33": {"t": "Анализ контрольной работы. Правильный многоугольник", "d": "20.01", "y": "Анализ работы"}, "34": {"t": "Окружность, описанная около правильного многоугольника", "d": "20.01", "y": "Изучение нового"}, "35": {"t": "Окружность, вписанная в правильный многоугольник", "d": "27.01", "y": "Изучение нового"}, "36": {"t": "Формулы площади правильного многоугольника, его стороны и радиуса вписанной окружности", "d": "27.01", "y": "Изучение нового"}, "37": {"t": "Построение правильных многоугольников. Решение задач", "d": "03.02", "y": "Отработка"}, "38": {"t": "Длина окружности. Длина дуги окружности", "d": "03.02", "y": "Изучение нового"}, "39": {"t": "Площадь круга", "d": "10.02", "y": "Изучение нового"}, "40": {"t": "Площадь кругового сектора", "d": "10.02", "y": "Изучение нового"}, "41": {"t": "Обобщающий урок. Задания ОГЭ по теме «Окружность»", "d": "17.02", "y": "Обобщение"}, "42": {"t": "Контрольная работа № 3 «Длина окружности и площадь круга»", "d": "17.02", "y": "Контроль"}, "43": {"t": "Анализ контрольной работы. Отображение плоскости на себя. Понятие движения", "d": "24.02", "y": "Анализ работы"}, "44": {"t": "Осевая и центральная симметрия", "d": "24.02", "y": "Изучение нового"}, "45": {"t": "Параллельный перенос", "d": "03.03", "y": "Изучение нового"}, "46": {"t": "Поворот", "d": "03.03", "y": "Изучение нового"}, "47": {"t": "Параллельный перенос и поворот. Решение задач", "d": "10.03", "y": "Отработка"}, "48": {"t": "Наложения и движения. Задания ОГЭ на симметрию", "d": "10.03", "y": "Практикум ОГЭ"}, "49": {"t": "Решение задач по теме «Движения»", "d": "17.03", "y": "Отработка"}, "50": {"t": "Контрольная работа № 4 «Движения»", "d": "17.03", "y": "Контроль"}, "51": {"t": "Анализ контрольной работы. Предмет стереометрии. Многогранники", "d": "31.03", "y": "Анализ работы"}, "52": {"t": "Призма. Параллелепипед. Объём тела", "d": "31.03", "y": "Изучение нового"}, "53": {"t": "Пирамида. Цилиндр и конус", "d": "07.04", "y": "Изучение нового"}, "54": {"t": "Сфера и шар. Решение задач", "d": "07.04", "y": "Отработка"}, "55": {"t": "Об аксиомах планиметрии", "d": "14.04", "y": "Изучение нового"}, "56": {"t": "Повторение. Треугольники: равенство, подобие, площадь", "d": "14.04", "y": "Отработка"}, "57": {"t": "Повторение. Прямоугольный треугольник. Теорема Пифагора", "d": "21.04", "y": "Отработка"}, "58": {"t": "Повторение. Тригонометрия в прямоугольном треугольнике", "d": "21.04", "y": "Отработка"}, "59": {"t": "Повторение. Четырёхугольники и их свойства", "d": "28.04", "y": "Отработка"}, "60": {"t": "Повторение. Окружность: углы, касательные, хорды", "d": "28.04", "y": "Отработка"}, "61": {"t": "Повторение. Вписанные и описанные окружности", "d": "05.05", "y": "Отработка"}, "62": {"t": "Повторение. Площади фигур", "d": "05.05", "y": "Отработка"}, "63": {"t": "Повторение. Векторы и координаты", "d": "12.05", "y": "Отработка"}, "64": {"t": "Задания ОГЭ № 15—19. Практикум", "d": "12.05", "y": "Практикум ОГЭ"}, "65": {"t": "Задания ОГЭ № 24—26. Практикум (задачи с доказательством)", "d": "19.05", "y": "Практикум ОГЭ"}, "66": {"t": "Итоговая контрольная работа", "d": "19.05", "y": "Контроль"}, "67": {"t": "Анализ итоговой контрольной работы", "d": "26.05", "y": "Изучение нового"}, "68": {"t": "Итоговое повторение. Оформление решения на экзамене", "d": "26.05", "y": "Изучение нового"}};
+  document.querySelectorAll('.ax-b').forEach(function(b){
+    b.addEventListener('click', function(){
+      var el = document.getElementById('blk' + b.dataset.b);
+      if(!el) return;
+      var d = el.querySelector('.blk-d'); if(d) d.open = true;
+      el.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+  var tip = document.getElementById('tip');
+  document.querySelectorAll('.ax-cells i').forEach(function(c){
+    c.addEventListener('mouseenter', function(e){
+      var d = TIPS[c.dataset.l]; if(!d) return;
+      tip.innerHTML = '<span>'+d.t+'</span><em>'+d.d+' · '+d.y+'</em>';
+      tip.classList.add('on'); move(e);
+    });
+    c.addEventListener('mousemove', move);
+    c.addEventListener('mouseleave', function(){ tip.classList.remove('on'); });
+  });
+  function move(e){
+    var w = tip.offsetWidth, x = e.clientX + 14, y = e.clientY + 18;
+    if(x + w > window.innerWidth - 10) x = e.clientX - w - 14;
+    if(y + tip.offsetHeight > window.innerHeight - 10) y = e.clientY - tip.offsetHeight - 14;
+    tip.style.left = x+'px'; tip.style.top = y+'px';
+  }
+  var active = null;
+  document.querySelectorAll('.chip').forEach(function(ch){
+    ch.addEventListener('click', function(){
+      var t = ch.dataset.t;
+      if(active === t){ clear(); return; }
+      clear(); active = t; ch.classList.add('on');
+      document.body.classList.add('filtering');
+      document.querySelectorAll('.les').forEach(function(l){
+        if(l.dataset.t === t) l.classList.add('hit'); });
+      var cls = 'c-' + ch.className.match(/chip-(\w+)/)[1];
+      document.querySelectorAll('.ax-cells i').forEach(function(c){
+        if(c.classList.contains(cls)) c.classList.add('hit'); });
+      document.querySelectorAll('.blk-d').forEach(function(d){ d.open = true; });
+    });
+  });
+  function clear(){
+    active = null;
+    document.body.classList.remove('filtering');
+    document.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('on'); });
+    document.querySelectorAll('.hit').forEach(function(c){ c.classList.remove('hit'); });
+  }
+})();
+</script>
+
+</body>
+</html>
